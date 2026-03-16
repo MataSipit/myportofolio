@@ -49,12 +49,29 @@ const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
 const mobileClose = document.getElementById('mobileClose');
 
-hamburger.addEventListener('click', () => mobileMenu.classList.add('open'));
-mobileClose.addEventListener('click', () => mobileMenu.classList.remove('open'));
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.add('open');
+});
+
+mobileClose.addEventListener('click', () => {
+  mobileMenu.classList.remove('open');
+});
 
 function closeMobileMenu() {
   mobileMenu.classList.remove('open');
 }
+
+// Tutup jika klik area gelap di luar menu
+mobileMenu.addEventListener('click', (e) => {
+  if (e.target === mobileMenu) {
+    mobileMenu.classList.remove('open');
+  }
+});
+
+// Tutup jika tekan Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') mobileMenu.classList.remove('open');
+});
 
 // ─── SCROLL REVEAL ───
 const revealEls = document.querySelectorAll('.reveal');
@@ -91,7 +108,8 @@ const countObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.5 });
 
 if (statNumbers.length > 0) {
-  countObserver.observe(statNumbers[0].closest('.stats-grid'));
+  const statsGrid = statNumbers[0].closest('.stats-grid');
+  if (statsGrid) countObserver.observe(statsGrid);
 }
 
 // ─── CONTACT FORM ───

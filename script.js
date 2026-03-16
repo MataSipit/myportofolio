@@ -47,30 +47,35 @@ navLinks.forEach(link => {
 // ─── MOBILE MENU ───
 const hamburger = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
-const mobileClose = document.getElementById('mobileClose');
 
-hamburger.addEventListener('click', () => {
+function openMobileMenu() {
   mobileMenu.classList.add('open');
-});
-
-mobileClose.addEventListener('click', () => {
-  mobileMenu.classList.remove('open');
-});
+  const spans = hamburger.querySelectorAll('span');
+  spans[0].style.transform = 'translateY(7px) rotate(45deg)';
+  spans[1].style.opacity = '0';
+  spans[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+}
 
 function closeMobileMenu() {
   mobileMenu.classList.remove('open');
+  const spans = hamburger.querySelectorAll('span');
+  spans[0].style.transform = '';
+  spans[1].style.opacity = '';
+  spans[2].style.transform = '';
 }
 
-// Tutup jika klik area gelap di luar menu
+hamburger.addEventListener('click', () => {
+  mobileMenu.classList.contains('open') ? closeMobileMenu() : openMobileMenu();
+});
+
+// Tutup jika klik area luar
 mobileMenu.addEventListener('click', (e) => {
-  if (e.target === mobileMenu) {
-    mobileMenu.classList.remove('open');
-  }
+  if (e.target === mobileMenu) closeMobileMenu();
 });
 
 // Tutup jika tekan Escape
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') mobileMenu.classList.remove('open');
+  if (e.key === 'Escape') closeMobileMenu();
 });
 
 // ─── SCROLL REVEAL ───
@@ -132,6 +137,7 @@ contactForm.addEventListener('submit', (e) => {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', (e) => {
     e.preventDefault();
+    closeMobileMenu();
     const target = document.querySelector(anchor.getAttribute('href'));
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
